@@ -28,10 +28,15 @@ func commandMap(cfg *Config) error {
 	if cfg.Next == "" {
 		cfg.Next = base
 	}
-	processRequest(cfg)
+	processRequest("Next", cfg)
 	return nil
 }
 
 func commandMapb(cfg *Config) error {
+	base := "https://pokeapi.co/api/v2/location-area/"
+	if cfg.Previous == "" {
+		cfg.Previous = base
+	}
+	processRequest("Previous", cfg)
 	return nil
 }

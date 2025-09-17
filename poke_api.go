@@ -7,9 +7,16 @@ import (
 	"net/http"
 )
 
-func processRequest(cfg *Config) {
+func processRequest(direction string, cfg *Config) {
 	pokemon_data := apiResponse{}
-	resp, err := http.Get(cfg.Next)	
+	urlToHit := ""
+	if direction == "Next" {
+		urlToHit = cfg.Next
+	} else {
+		urlToHit = cfg.Previous
+	}
+	
+	resp, err := http.Get(urlToHit)	
 	if err != nil {
 		fmt.Println(err)
 	}
