@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 	"strings"
-
 )
 
 func startRepl(){
+	cfg := &Config{}
 	reader := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -19,10 +19,9 @@ func startRepl(){
 		}
 
 		commandName := words[0]
-
 		command, exists := getCommands()[commandName]
 		if exists {
-			err := command.callback()
+			err := command.callback(cfg)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -51,6 +50,16 @@ func getCommands() map[string]cliCommand {
 			name:        "help",
 			description: "Displays a help message",
 			callback:    commandHelp,
+		},
+		"map": {
+			name:        "map",
+			description: "Displays locations areas in the Pokemon world by increments of 20",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "mapb",
+			description: "Displays the previous 20 location areas locations",
+			callback:    commandMapb,
 		},
 	}
 }
