@@ -8,19 +8,25 @@ type cliCommand struct {
 	callback    func(cfg *Config, c *cache.Cache) error
 }
 
-type PokemonResults struct{
+type LocationAreaResults struct{
 	Name 		string `json:"name"`
 	Url			string `json:"url"` 
 }
 
-type apiResponse struct {
+type LocationAreaResponse struct {
 	Count 		int `json:"count"`
 	Next		string `json:"next"`
 	Previous 	string `json:"previous"`
-	Results 	[]PokemonResults `json:"results"`
+	Results 	[]LocationAreaResults `json:"results"`
 }
 
 type Config struct {
 	Next		string
 	Previous 	string
+	
+}
+
+type PokemonInLocation struct {
+	Name string `json:"name"`
+	URL  string `json:"url"`
 }
