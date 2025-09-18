@@ -10,9 +10,13 @@ import (
 
 )
 
+const pokeAPIBaseURL = "https://pokeapi.co/api/v2/"
+
 func startRepl(){
+	
 	c := cache.NewCache(20 * time.Second)
-	cfg := &Config{}
+	cfg := &Config{BaseURL: pokeAPIBaseURL,
+					Pokedex: make(map[string][]string),}
 	reader := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -24,12 +28,11 @@ func startRepl(){
 
 		commandName := words[0]
 		commandArgs := words[1:]
-
 		command, exists := getCommands()[commandName]
 		if exists {
 			err := command.callback(cfg, c, commandArgs)
 			if err != nil {
-				fmt.Println("Error here", err)
+				fmt.Println(err)
 			}
 			continue
 		} else {
@@ -66,6 +69,11 @@ func getCommands() map[string]cliCommand {
 			name:        "explore",
 			description: "Display pokemon found in a area-location",
 			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Attempt to catch pokemon",
+			callback:    commandCatch,
 		},
 		"exit": {
 			name:        "exit",

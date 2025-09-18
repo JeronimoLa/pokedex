@@ -21,16 +21,21 @@ type LocationAreaResponse struct {
 }
 
 type Config struct {
+	BaseURL		string
 	Next		string
 	Previous 	string
-	
+	Pokedex		map[string][]string
 }
 
 type PokemonInLocation struct {
 	PokemonEncounters []struct {
 		Pokemon struct {
-			Name string `json:"name"`
-			URL  string `json:"url"`
+			Name	string `json:"name"`
+			URL  	string `json:"url"`
 		} `json:"pokemon"`
 	} `json:"pokemon_encounters"`
+}
+
+type PokemonDetails struct {
+	BaseExperience	int `json:"base_experience"`
 }

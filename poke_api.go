@@ -4,8 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
+	"time"
+
 	"github.com/jeronimoLa/pokedexcli/internal/pokecache"
+
 )
 
 func indexCache(url string, cfg *Config, c *cache.Cache) {
@@ -58,8 +62,7 @@ func printResults(results []LocationAreaResults) {
 	}
 }
 
-
-func processExplore(url string){
+func explore(url string) {
 	pokemon := PokemonInLocation{}
 	resp, err := http.Get(url)
 	if err != nil {
@@ -82,3 +85,35 @@ func processExplore(url string){
 	}
 
 }
+
+func catch(cfg *Config, url string, pokemon string) {
+	pokemon_details := PokemonDetails{}
+
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = json.Unmarshal(body, &pokemon_details)
+	if err != nil {
+		fmt.Println(err)
+	}
+	baseExperience := pokemon_details.BaseExperience
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+
+	divisor := baseExperience/50 + 1 // as baseExperience increases, divisor grows, making the event rarer.
+	if r.Intn(divisor) == 0 { 
+		fmt.Printf("%s was caught!\n", pokemon)
+		cfg.Pokedex["pokemon_caught"] = append(cfg.Pokedex["pokemon_caught"], pokemon)
+	} else {
+		fmt.Printf("%s escaped!\n", pokemon)
+	}
+}
+
+// catch hippopotas
