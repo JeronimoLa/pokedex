@@ -1,21 +1,9 @@
-package main
+package cache
+
 
 import (
-	"fmt"
-	"sync"
 	"time"
 )
-
-type Cache struct {
-	mu    		sync.Mutex
-	entries 	map[string]cacheEntry
-	interval	time.Duration
-}
-
-type cacheEntry struct {
-	createdAt 	time.Time
-	val			[]byte
-}
 
 func NewCache(interval time.Duration) *Cache {
 	c := &Cache{ 
@@ -54,22 +42,12 @@ func (c *Cache) reapLoop() {
 	for {
     	<-ticker.C
 		c.mu.Lock()
-		for key, _ := range c.entries{
-			elapsedTime := time.Now().Sub(c.entries[key].createdAt)
+		for key := range c.entries{
+			elapsedTime := time.Since(c.entries[key].createdAt)
 			if elapsedTime > c.interval {
 				delete(c.entries, key)
 			}
     	}
 		c.mu.Unlock()
 	}
-}
-
-func main() {
-	c := NewCache(30 * time.Second)
-	c.Add("url", []byte("testdata"))
-	fmt.Println(c.entries["url"].val)
-	time.Sleep(10 * time.Second)
-	fmt.Println(c.entries["url"].val)
-	time.Sleep(10 * time.Second)
-
 }

@@ -5,9 +5,13 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
+	"github.com/jeronimoLa/pokedexcli/internal/pokecache"
+
 )
 
 func startRepl(){
+	c := cache.NewCache(20 * time.Second)
 	cfg := &Config{}
 	reader := bufio.NewScanner(os.Stdin)
 	for {
@@ -21,7 +25,7 @@ func startRepl(){
 		commandName := words[0]
 		command, exists := getCommands()[commandName]
 		if exists {
-			err := command.callback(cfg)
+			err := command.callback(cfg, c)
 			if err != nil {
 				fmt.Println(err)
 			}

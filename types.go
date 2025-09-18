@@ -1,9 +1,11 @@
 package main
 
+import cache "github.com/jeronimoLa/pokedexcli/internal/pokecache"
+
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(cfg *Config) error
+	callback    func(cfg *Config, c *cache.Cache) error
 }
 
 type PokemonResults struct{
