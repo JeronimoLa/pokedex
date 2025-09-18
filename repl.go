@@ -23,11 +23,13 @@ func startRepl(){
 		}
 
 		commandName := words[0]
+		commandArgs := words[1:]
+
 		command, exists := getCommands()[commandName]
 		if exists {
-			err := command.callback(cfg, c)
+			err := command.callback(cfg, c, commandArgs)
 			if err != nil {
-				fmt.Println(err)
+				fmt.Println("Error here", err)
 			}
 			continue
 		} else {
@@ -45,11 +47,6 @@ func cleanInput(text string) []string {
 
 func getCommands() map[string]cliCommand {
 	return map[string]cliCommand{
-		"exit": {
-			name:        "exit",
-			description: "Exit the Pokedex",
-			callback:    commandExit,
-		},
 		"help": {
 			name:        "help",
 			description: "Displays a help message",
@@ -64,6 +61,16 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Displays the previous 20 location areas locations",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Display pokemon found in a area-location",
+			callback:    commandExplore,
+		},
+		"exit": {
+			name:        "exit",
+			description: "Exit the Pokedex",
+			callback:    commandExit,
 		},
 	}
 }

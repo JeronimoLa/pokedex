@@ -5,7 +5,7 @@ import cache "github.com/jeronimoLa/pokedexcli/internal/pokecache"
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(cfg *Config, c *cache.Cache) error
+	callback    func(cfg *Config, c *cache.Cache, args []string) error
 }
 
 type LocationAreaResults struct{
@@ -27,6 +27,10 @@ type Config struct {
 }
 
 type PokemonInLocation struct {
-	Name string `json:"name"`
-	URL  string `json:"url"`
+	PokemonEncounters []struct {
+		Pokemon struct {
+			Name string `json:"name"`
+			URL  string `json:"url"`
+		} `json:"pokemon"`
+	} `json:"pokemon_encounters"`
 }
