@@ -86,7 +86,7 @@ func explore(url string) {
 
 }
 
-func catch(cfg *Config, url string, pokemon string) {
+func catch(cfg *Config, url string) {
 	pokemon_details := PokemonDetails{}
 
 	resp, err := http.Get(url)
@@ -109,11 +109,24 @@ func catch(cfg *Config, url string, pokemon string) {
 
 	divisor := baseExperience/50 + 1 // as baseExperience increases, divisor grows, making the event rarer.
 	if r.Intn(divisor) == 0 { 
-		fmt.Printf("%s was caught!\n", pokemon)
-		cfg.Pokedex["pokemon_caught"] = append(cfg.Pokedex["pokemon_caught"], pokemon)
+		fmt.Printf("%s was caught!\n", pokemon_details.Name)
+		cfg.Pokedex = append(cfg.Pokedex, pokemon_details)
 	} else {
-		fmt.Printf("%s escaped!\n", pokemon)
+		fmt.Printf("%s escaped!\n", pokemon_details.Name)
 	}
 }
 
+func printPokemon (pokemon PokemonDetails){
+	fmt.Println("Name:", pokemon.Name)
+	fmt.Println("Height", pokemon.Height)
+	fmt.Println("Weight", pokemon.Weight)
+	fmt.Println("Stats")
+	for _, val := range pokemon.Stats {
+		fmt.Printf(" -%s: %d\n", val.Stat.Name, val.BaseStat)
+	}
+	fmt.Println("Types")
+	for _, types := range pokemon.Types {
+		fmt.Println(" -", types.Type.Name)
+	}
+}
 // catch hippopotas

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+
 	"github.com/jeronimoLa/pokedexcli/internal/pokecache"
 )
 
@@ -61,19 +62,41 @@ func commandCatch(cfg *Config, c *cache.Cache, args []string) error {
 	if len(args) == 0 {
 		return fmt.Errorf("missing pokemon name")
 	}
-	if len(args) >1 {
+	if len(args) > 1 {
 		return fmt.Errorf("try catching one pokemon at a time")
 	} 
 
 	pokemon := args[0]
 	url := cfg.BaseURL + "pokemon/" + pokemon
 	fmt.Printf("Throwing a Pokeball at %s...\n", pokemon)
-	catch(cfg, url, pokemon)
+	catch(cfg, url)
 
 	fmt.Printf("\n\nPokemon Caught:\n")
-	for _, pokemon := range cfg.Pokedex["pokemon_caught"] {
-		fmt.Println(pokemon)
+	for _, pokemon := range cfg.Pokedex {
+		fmt.Println(pokemon.Name)
+	}
+	return nil
+}
+
+func commandInspect(cfg *Config, c *cache.Cache, args []string) error {
+	if len(args) == 0 {
+		return fmt.Errorf("missing pokemon name")
+	}
+	if len(args) > 1 {
+		return fmt.Errorf("stats can on be seen from one pokemon")
+	} 
+
+	found := false
+	pokemon := args[0]
+	for _, catchedPokemon := range cfg.Pokedex {
+		if catchedPokemon.Name == pokemon {
+			found = true
+			printPokemon(catchedPokemon)
+		}
 	}
 
+	if !found {
+		return fmt.Errorf("you have not caught that pokemon")
+	}
 	return nil
 }

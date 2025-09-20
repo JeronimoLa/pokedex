@@ -13,10 +13,8 @@ import (
 const pokeAPIBaseURL = "https://pokeapi.co/api/v2/"
 
 func startRepl(){
-	
 	c := cache.NewCache(20 * time.Second)
-	cfg := &Config{BaseURL: pokeAPIBaseURL,
-					Pokedex: make(map[string][]string),}
+	cfg := &Config{BaseURL: pokeAPIBaseURL}
 	reader := bufio.NewScanner(os.Stdin)
 	for {
 		fmt.Print("Pokedex > ")
@@ -74,6 +72,11 @@ func getCommands() map[string]cliCommand {
 			name:        "catch",
 			description: "Attempt to catch pokemon",
 			callback:    commandCatch,
+		},
+		"inspect": {
+			name:        "inspect",
+			description: "Display pokemon details",
+			callback:    commandInspect,
 		},
 		"exit": {
 			name:        "exit",
