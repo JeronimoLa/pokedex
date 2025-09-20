@@ -110,6 +110,7 @@ func catch(cfg *Config, url string) {
 	divisor := baseExperience/50 + 1 // as baseExperience increases, divisor grows, making the event rarer.
 	if r.Intn(divisor) == 0 { 
 		fmt.Printf("%s was caught!\n", pokemon_details.Name)
+		fmt.Println("You may now inspect it with the inspect command.")
 		cfg.Pokedex = append(cfg.Pokedex, pokemon_details)
 	} else {
 		fmt.Printf("%s escaped!\n", pokemon_details.Name)
@@ -129,4 +130,3 @@ func printPokemon (pokemon PokemonDetails){
 		fmt.Println(" -", types.Type.Name)
 	}
 }
-// catch hippopotas

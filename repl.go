@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 	"time"
-	"github.com/jeronimoLa/pokedexcli/internal/pokecache"
 
+	"github.com/jeronimoLa/pokedexcli/internal/pokecache"
 )
 
 const pokeAPIBaseURL = "https://pokeapi.co/api/v2/"
@@ -77,6 +77,11 @@ func getCommands() map[string]cliCommand {
 			name:        "inspect",
 			description: "Display pokemon details",
 			callback:    commandInspect,
+		},
+		"pokedex": {
+			name:        "pokedex",
+			description: "Displays a list of all the names of the Pokemon the user has caught.",
+			callback:    commandPokedex,
 		},
 		"exit": {
 			name:        "exit",

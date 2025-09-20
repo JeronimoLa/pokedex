@@ -59,6 +59,7 @@ func commandExplore(cfg *Config, c *cache.Cache, args []string) error {
 }
 
 func commandCatch(cfg *Config, c *cache.Cache, args []string) error {
+	// TODO: Pokemon can only be caught once right now it can be caught twice
 	if len(args) == 0 {
 		return fmt.Errorf("missing pokemon name")
 	}
@@ -70,11 +71,6 @@ func commandCatch(cfg *Config, c *cache.Cache, args []string) error {
 	url := cfg.BaseURL + "pokemon/" + pokemon
 	fmt.Printf("Throwing a Pokeball at %s...\n", pokemon)
 	catch(cfg, url)
-
-	fmt.Printf("\n\nPokemon Caught:\n")
-	for _, pokemon := range cfg.Pokedex {
-		fmt.Println(pokemon.Name)
-	}
 	return nil
 }
 
@@ -97,6 +93,14 @@ func commandInspect(cfg *Config, c *cache.Cache, args []string) error {
 
 	if !found {
 		return fmt.Errorf("you have not caught that pokemon")
+	}
+	return nil
+}
+
+func commandPokedex(cfg *Config, c *cache.Cache, args []string) error {
+	fmt.Printf("Your Pokedex:\n")
+	for _, pokemon := range cfg.Pokedex {
+		fmt.Printf(" - %s\n", pokemon.Name)
 	}
 	return nil
 }
